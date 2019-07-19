@@ -2,4 +2,6 @@
 .idea
 bin
 3rd/pkg
+3rd/src
 pkg
+docs

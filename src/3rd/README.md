@@ -1,2 +1,3 @@
 # 3rd 依赖的第3方库
- * go get github.com/gin-gonic/gin
+ * github.com/julienschmidt/httprouter
+   * [Document](https://github.com/julienschmidt/httprouter)
