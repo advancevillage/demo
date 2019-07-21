@@ -27,6 +27,13 @@
 // @Failure 500 {object} httputil.HTTPError
 // @Router /accounts/{id} [get]
 ````
+### 构建
+ * git submodule init
+ * git submodule update
+ * cd 3rd
+   * git submodule init
+   * git submodule update
+
 
 ### 参考文档
  * [10 best practices restful api](https://blog.mwaysolutions.com/2014/06/05/10-best-practices-for-better-restful-api/)
