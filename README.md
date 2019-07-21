@@ -23,7 +23,7 @@
 // @Success 200 {object} api.Account
 // @Header 200 {string} Token "qwerty"
 // @Failure 400 {object} httputil.HTTPError
-// @Failure 404 {object} httputil.HTTPError
+// @Failure 401 {object} httputil.HTTPError
 // @Failure 500 {object} httputil.HTTPError
 // @Router /accounts/{id} [get]
 ````

@@ -30,11 +30,10 @@ func NewRouter() (err error) {
 // @Param offset query int false "页码 >= 1" default(1)
 // @Param limit  query int false "每页显示条数 > 0" default(10)
 // @Success 200 {string} message " "
-// @Header  200 {string} message " "
-// @Failure 400 {string} message " "
-// @Failure 401 {string} message " "
-// @Failure 404 {string} message " "
-// @Failure 500 {string} message " "
+// @Failure 400 {object} router.HttpResponseErrors
+// @Failure 401 {object} router.HttpResponseErrors
+// @Failure 403 {object} router.HttpResponseErrors
+// @Failure 500 {object} router.HttpResponseErrors
 // @Router /customers [get]
 func QueryCustomersProcessor(w http.ResponseWriter, r *http.Request, ps hr.Params) {
 
