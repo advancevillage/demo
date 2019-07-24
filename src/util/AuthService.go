@@ -1,0 +1,2 @@
+//author: richard
+package util

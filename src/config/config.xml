@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<databases>
+    <master>
+        <database>
+            <host>localhost</host>
+            <port>3306</port>
+            <user>root</user>
+            <password>password</password>
+            <schema>demo</schema>
+            <charset>utf8</charset>
+            <driver>mysql</driver>
+        </database>
+    </master>
+    <slaves>
+        <database>
+            <host>localhost</host>
+            <port>3306</port>
+            <user>root</user>
+            <password>password</password>
+            <schema>demo</schema>
+            <charset>utf8</charset>
+            <driver>mysql</driver>
+        </database>
+        <database>
+            <host>localhost</host>
+            <port>3306</port>
+            <user>root</user>
+            <password>password</password>
+            <schema>demo</schema>
+            <charset>utf8</charset>
+            <driver>mysql</driver>
+        </database>
+    </slaves>
+</databases>

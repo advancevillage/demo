@@ -13,6 +13,7 @@ package main
 
 import (
 	"args"
+	"pool"
 	"router"
 )
 
@@ -20,6 +21,11 @@ func main() {
 	var err error
 	//init args
 	args.Init()
+	//init database
+	err = pool.Init(args.ConfigureFile())
+	if err != nil {
+		return
+	}
 	//init route
 	err = router.NewRouter()
 	if err != nil {

@@ -4,11 +4,12 @@ package router
 import (
 	"args"
 	hr "github.com/julienschmidt/httprouter"
+	"model"
 	"net/http"
 )
 
-func RoutePolicy() []*Route {
-	var policy = []*Route {
+func RoutePolicy() []*model.Route {
+	var policy = []*model.Route {
 		{Method: "GET", Uri:"/customers", HandlerFunc: QueryCustomersProcessor},
 	}
 	return policy
@@ -30,10 +31,10 @@ func NewRouter() (err error) {
 // @Param offset query int false "页码 >= 1" default(1)
 // @Param limit  query int false "每页显示条数 > 0" default(10)
 // @Success 200 {string} message " "
-// @Failure 400 {object} router.HttpResponseErrors
-// @Failure 401 {object} router.HttpResponseErrors
-// @Failure 403 {object} router.HttpResponseErrors
-// @Failure 500 {object} router.HttpResponseErrors
+// @Failure 400 {object} model.HttpResponseErrors
+// @Failure 401 {object} model.HttpResponseErrors
+// @Failure 403 {object} model.HttpResponseErrors
+// @Failure 500 {object} model.HttpResponseErrors
 // @Router /customers [get]
 func QueryCustomersProcessor(w http.ResponseWriter, r *http.Request, ps hr.Params) {
 
