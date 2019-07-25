@@ -2,31 +2,31 @@
 <databases>
     <master>
         <database>
-            <host>localhost</host>
+            <host>100.100.21.114</host>
             <port>3306</port>
-            <user>root</user>
-            <password>password</password>
-            <schema>demo</schema>
+            <user>test</user>
+            <password>richard</password>
+            <schema>rpa_license</schema>
             <charset>utf8</charset>
             <driver>mysql</driver>
         </database>
     </master>
     <slaves>
         <database>
-            <host>localhost</host>
+            <host>100.100.21.114</host>
             <port>3306</port>
-            <user>root</user>
-            <password>password</password>
-            <schema>demo</schema>
+            <user>test</user>
+            <password>richard</password>
+            <schema>rpa_license</schema>
             <charset>utf8</charset>
             <driver>mysql</driver>
         </database>
         <database>
-            <host>localhost</host>
+            <host>100.100.21.114</host>
             <port>3306</port>
-            <user>root</user>
-            <password>password</password>
-            <schema>demo</schema>
+            <user>test</user>
+            <password>richard</password>
+            <schema>rpa_license</schema>
             <charset>utf8</charset>
             <driver>mysql</driver>
         </database>

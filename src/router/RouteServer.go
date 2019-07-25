@@ -10,7 +10,7 @@ import (
 
 func RoutePolicy() []*model.Route {
 	var policy = []*model.Route {
-		{Method: "GET", Uri:"/customers", HandlerFunc: QueryCustomersProcessor},
+		{Method: "GET", Uri:"/v1/customers", HandlerFunc: QueryCustomersProcessor},
 	}
 	return policy
 }
