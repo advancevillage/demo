@@ -11,6 +11,7 @@ import (
 	"model"
 	"os"
 	"sync"
+	"time"
 )
 
 var (
@@ -63,7 +64,8 @@ func Connection(b bool) (DB *gorm.DB) {
 		DB = databases.Master.Configure.DB
 	} else {
 		length := len(databases.Slaves.Configure)
-		index := rand.Intn(length)
+		r := rand.New(rand.NewSource(time.Now().UnixNano()))
+		index := r.Intn(length)
 		DB = databases.Slaves.Configure[index].DB
 	}
 	return
