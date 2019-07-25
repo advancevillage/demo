@@ -3,14 +3,15 @@ package model
 
 import (
 	"encoding/xml"
-	hr "github.com/julienschmidt/httprouter"
+	"github.com/jinzhu/gorm"
+	"github.com/julienschmidt/httprouter"
 )
 
 //route
 type Route struct {
 	Method 	string 		  `json:"method"`
 	Uri 	string 		  `json:"uri"`
-	HandlerFunc hr.Handle `json:"handler"`
+	HandlerFunc httprouter.Handle `json:"handler"`
 }
 
 type HttpResponseErrors struct {
@@ -32,14 +33,13 @@ type Database struct {
 	Schema   string `xml:"schema"`
 	Charset  string `xml:"charset"`
 	Driver   string `xml:"driver"`
+	DB 		*gorm.DB `xml:"-"`
 }
 
 type DatabaseMaster struct {
-	XMLName    xml.Name `xml:"master"`
 	Configure  Database `xml:"database"`
 }
 type DatabaseSlave struct {
-	XMLName    xml.Name   `xml:"slaves"`
 	Configure  []Database `xml:"database"`
 }
 
