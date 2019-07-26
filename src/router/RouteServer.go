@@ -3,6 +3,7 @@ package router
 
 import (
 	"args"
+	"fmt"
 	hr "github.com/julienschmidt/httprouter"
 	"model"
 	"net/http"
@@ -10,7 +11,7 @@ import (
 
 func RoutePolicy() []*model.Route {
 	var policy = []*model.Route {
-		{Method: "GET", Uri:"/v1/customers", HandlerFunc: QueryCustomersProcessor},
+		{Method: "GET", Uri:"/v1/customers", HandlerFunc: GetV1QueryCustomersProcessor},
 	}
 	return policy
 }
@@ -36,7 +37,9 @@ func NewRouter() (err error) {
 // @Failure 403 {object} model.HttpResponseErrors
 // @Failure 500 {object} model.HttpResponseErrors
 // @Router /customers [get]
-func QueryCustomersProcessor(w http.ResponseWriter, r *http.Request, ps hr.Params) {
-
+func GetV1QueryCustomersProcessor(w http.ResponseWriter, r *http.Request, ps hr.Params) {
+	qs := r.URL.Query()
+	// offset limit
+	fmt.Println(qs)
 }
 

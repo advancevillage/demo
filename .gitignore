@@ -5,3 +5,5 @@ src/.DS_Store
 bin
 pkg
 docs
+demo.mwb.bak
+demo.sql

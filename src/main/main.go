@@ -20,9 +20,12 @@ import (
 func main() {
 	var err error
 	//init args
-	args.Init()
+	err = args.Init()
+	if err != nil {
+		return
+	}
 	//init database
-	err = pool.Init(args.ConfigureFile())
+	err = pool.InitDatabase(args.DatabaseConfigure())
 	if err != nil {
 		return
 	}

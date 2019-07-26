@@ -37,14 +37,17 @@ type Database struct {
 }
 
 type DatabaseMaster struct {
-	Configure  Database `xml:"database"`
+	Member  Database `xml:"database"`
 }
 type DatabaseSlave struct {
-	Configure  []Database `xml:"database"`
+	Members []Database `xml:"database"`
 }
 
 type Databases struct {
-	XMLName  xml.Name   `xml:"databases"`
 	Master 	 DatabaseMaster  `xml:"master"`
 	Slaves   DatabaseSlave   `xml:"slaves"`
+}
+
+type Configure struct {
+	Databases  `xml:"databases"`
 }
