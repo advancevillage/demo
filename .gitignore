@@ -7,3 +7,4 @@ pkg
 docs
 demo.mwb.bak
 demo.sql
+*.log
