@@ -19,7 +19,7 @@ var (
 func Init() (err error) {
 	var args = os.Args
 	var length = len(args)
-	host = "100.100.20.36"
+	host = "192.168.1.101"
 	port = "8080"
 	configureFile = "config/config.xml"
 	for i := 1; i < length; i += 2 {
@@ -72,6 +72,10 @@ func HttpServerAddress() string {
 }
 
 func DatabaseConfigure() *model.Databases {
-	return &configure.Databases
+	return &configure.DatabasesObject
+}
+
+func LogConfigure() *model.Log {
+	return &configure.LogObject
 }
 

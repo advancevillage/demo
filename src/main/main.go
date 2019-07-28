@@ -13,6 +13,7 @@ package main
 
 import (
 	"args"
+	"logs"
 	"pool"
 	"router"
 )
@@ -24,14 +25,21 @@ func main() {
 	if err != nil {
 		return
 	}
+	//init log
+	err = logs.InitLog(args.LogConfigure())
+	if err != nil {
+		return
+	}
 	//init database
 	err = pool.InitDatabase(args.DatabaseConfigure())
 	if err != nil {
+		err = logs.Error(err.Error())
 		return
 	}
 	//init route
 	err = router.NewRouter()
 	if err != nil {
+		err = logs.Error(err.Error())
 		return
 	}
 }

@@ -5,10 +5,9 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	"math/rand"
 	"model"
 	"sync"
-	"time"
+	"util"
 )
 
 var (
@@ -47,8 +46,7 @@ func DatabaseConnection(b bool) (DB *gorm.DB) {
 		DB = databases.Master.Member.DB
 	} else {
 		length := len(databases.Slaves.Members)
-		r := rand.New(rand.NewSource(time.Now().UnixNano()))
-		index := r.Intn(length)
+		index := util.RandomInt(length)
 		DB = databases.Slaves.Members[index].DB
 	}
 	return

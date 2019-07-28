@@ -28,12 +28,7 @@
 // @Router /accounts/{id} [get]
 ````
 ### 构建
- * mkdir 3rd
- * git submodule init
- * git submodule update
- * cd 3rd
-   * git submodule init
-   * git submodule update
+  * git submodule update --init --recursive
 
 
 ### 参考文档

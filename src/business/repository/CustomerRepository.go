@@ -6,7 +6,7 @@ import (
 )
 
 type CustomerRepository interface {
-	Customers() ([]*model.Customer, error)
+	Customers(offset, limit int) ([]*model.Customer, error)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -15,8 +15,8 @@ type CustomerService struct {
 	Repo CustomerRepository
 }
 
-func(s *CustomerService) Customers() ([]*model.Customer, error) {
-	return s.Repo.Customers()
+func(s *CustomerService) Customers(offset, limit int) ([]*model.Customer, error) {
+	return s.Repo.Customers(offset, limit)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +25,7 @@ type CustomerDatabaseRepository struct {
 	DB  *gorm.DB
 }
 
-func (r *CustomerDatabaseRepository) Customers() ([]model.Customer, error) {
+func (r *CustomerDatabaseRepository) Customers(offset, limit int) ([]model.Customer, error) {
 	return nil, nil
 }
 ///////////////////////////////////////////////////////////////////////////////////////////

@@ -2,7 +2,7 @@
 package model
 
 import (
-	"encoding/xml"
+	"bytes"
 	"github.com/jinzhu/gorm"
 	"github.com/julienschmidt/httprouter"
 )
@@ -25,7 +25,6 @@ type HttpResponseErrorsContext struct {
 }
 //database
 type Database struct {
-	XMLName xml.Name `xml:"database"`
 	Host 	 string `xml:"host"`
 	Port 	 string `xml:"port"`
 	User 	 string `xml:"user"`
@@ -33,7 +32,7 @@ type Database struct {
 	Schema   string `xml:"schema"`
 	Charset  string `xml:"charset"`
 	Driver   string `xml:"driver"`
-	DB 		*gorm.DB `xml:"-"`
+	DB 		*gorm.DB`xml:"-"`
 }
 
 type DatabaseMaster struct {
@@ -49,5 +48,17 @@ type Databases struct {
 }
 
 type Configure struct {
-	Databases  `xml:"databases"`
+	DatabasesObject Databases `xml:"databases"`
+	LogObject Log `xml:"log"`
+}
+
+//log
+type Log struct {
+	CacheSizeString string 	`xml:"cache_size"`
+	File 	        string 	`xml:"file"`
+	CacheCount int 			`xml:"cache_count"`
+	Cache      []bytes.Buffer `xml:"-"`
+	CacheSize  int 			  `xml:"-"`
+	R		   int 			  `xml:"-"`
+	W 		   int 			  `xml:"-"`
 }
