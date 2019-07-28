@@ -95,6 +95,9 @@ func persistent() (err error) {
 	if err != nil {
 		return
 	}
+	defer func() {
+		err = f.Close()
+	}()
 	_, err = log.Cache[log.R % log.CacheCount].WriteTo(f)
 	if err != nil {
 		return

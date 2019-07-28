@@ -36,6 +36,6 @@
     <log>
         <file>demo.log</file>
         <cache_count>10</cache_count>
-        <cache_size>4KB</cache_size>
+        <cache_size>256KB</cache_size>
     </log>
 </configure>
