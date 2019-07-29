@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/julienschmidt/httprouter"
+	"logs"
 	"model"
 	"net/http"
 	"util"
@@ -41,23 +42,25 @@ func NewRouter() (err error) {
 // @Failure 500 {object} model.HttpResponseErrors
 // @Router /customers [get]
 func GetV1QueryCustomersProcessor(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	var err error
 	offset := util.HttpQueryParamsService(r, "offset")
 	limit  := util.HttpQueryParamsService(r, "limit")
 	//错误信息数据生命期贯穿请求全局
-	E := new(model.HttpResponseErrors)
-	data, statusCode := processor.QueryCustomersService(offset, limit, E)
-	if statusCode == http.StatusOK {
-		w.WriteHeader(statusCode)
-		n, err := w.Write(data)
-		fmt.Println(n, err)
-	} else {
-		data, err := json.Marshal(E)
-		if err != nil {
-			fmt.Println(data, err)
-		}
-		w.WriteHeader(statusCode)
-		n, err := w.Write(data)
-		fmt.Println(n, err)
+	httpErrorObject := new(model.HttpResponseErrors)
+	data, statusCode := processor.QueryCustomersService(offset, limit, httpErrorObject)
+	//返回数据集
+	w.WriteHeader(statusCode)
+	n, err := w.Write(data)
+	if err != nil {
+		logs.Error(fmt.Sprintf("[%d:%s]", n, err.Error()))
+	}
+	httpError, err := json.Marshal(httpErrorObject)
+	if err != nil {
+		logs.Error(err.Error())
+	}
+	n, err = w.Write(httpError)
+	if err != nil {
+		logs.Error(fmt.Sprintf("[%d:%s]", n, err.Error()))
 	}
 }
 

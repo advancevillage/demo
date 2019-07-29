@@ -6,8 +6,8 @@
 // @contact.email cugriver@163.com
 // @license.name Apache 2.0
 // @license.url  http://www.apache.org/licenses/LICENSE-2.0.html
-// @host localhost:8080
-// @BasePath /
+// @host 192.168.1.101:8080
+// @BasePath /v1
 // @schemes http https
 package main
 
@@ -33,13 +33,13 @@ func main() {
 	//init database
 	err = pool.InitDatabase(args.DatabaseConfigure())
 	if err != nil {
-		err = logs.Error(err.Error())
+		logs.Error(err.Error())
 		return
 	}
 	//init route
 	err = router.NewRouter()
 	if err != nil {
-		err = logs.Error(err.Error())
+		logs.Error(err.Error())
 		return
 	}
 }

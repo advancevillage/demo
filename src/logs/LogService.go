@@ -58,7 +58,9 @@ func InitLog(o *model.Log) (err error) {
 	return
 }
 
-func Error(msg string) (err error) {
+//@note: err 并没有返回
+func Error(msg string) {
+	var err error
 	var i,j,m,n int
 	msg = msg + "\n"
 	n = len(msg)

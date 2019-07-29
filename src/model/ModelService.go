@@ -5,6 +5,15 @@ import (
 	"bytes"
 	"github.com/jinzhu/gorm"
 	"github.com/julienschmidt/httprouter"
+	"net/http"
+)
+//const
+const (
+	HttpStatusSuccessCode = http.StatusOK
+	HttpStatusBadRequestCode = 400
+
+	//error code
+	HttpRequestParamErrorCode = 1000
 )
 
 //route
@@ -19,9 +28,9 @@ type HttpResponseErrors struct {
 }
 
 type HttpResponseErrorsContext struct {
-	Code 	 int 	`json:"code"`
-	Message  string `json:"message"`
-	MoreInfo string `json:"moreInfo"`
+	Code 	 int 	`json:"code,omitempty"`
+	Message  string `json:"message,omitempty"`
+	MoreInfo string `json:"moreInfo,omitempty"`
 }
 //database
 type Database struct {
