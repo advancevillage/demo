@@ -4,7 +4,6 @@ package router
 import (
 	"args"
 	"business/processor"
-	"encoding/json"
 	"fmt"
 	"github.com/julienschmidt/httprouter"
 	"logs"
@@ -43,6 +42,7 @@ func NewRouter() (err error) {
 // @Router /customers [get]
 func GetV1QueryCustomersProcessor(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	var err error
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	offset := util.HttpQueryParamsService(r, "offset")
 	limit  := util.HttpQueryParamsService(r, "limit")
 	//错误信息数据生命期贯穿请求全局
@@ -51,14 +51,6 @@ func GetV1QueryCustomersProcessor(w http.ResponseWriter, r *http.Request, ps htt
 	//返回数据集
 	w.WriteHeader(statusCode)
 	n, err := w.Write(data)
-	if err != nil {
-		logs.Error(fmt.Sprintf("[%d:%s]", n, err.Error()))
-	}
-	httpError, err := json.Marshal(httpErrorObject)
-	if err != nil {
-		logs.Error(err.Error())
-	}
-	n, err = w.Write(httpError)
 	if err != nil {
 		logs.Error(fmt.Sprintf("[%d:%s]", n, err.Error()))
 	}

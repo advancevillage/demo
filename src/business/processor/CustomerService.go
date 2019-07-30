@@ -15,7 +15,7 @@ func QueryCustomersService(offsetString, limitString string, httpErrorObject *mo
 	if e1 != nil || e2 != nil {
 		buf = nil
 		statusCode = model.HttpStatusBadRequestCode
-		httpErrorObject.E = append(httpErrorObject.E, &model.HttpResponseErrorsContext{
+		httpErrorObject.Errors = append(httpErrorObject.Errors, &model.HttpResponseErrorsContext{
 			Code:model.HttpRequestParamErrorCode,
 			Message: fmt.Sprintf("offset = %s or limit = %s has format error", offsetString, limitString),
 		})
@@ -28,14 +28,16 @@ func QueryCustomersService(offsetString, limitString string, httpErrorObject *mo
 	filter := make(map[string]interface{})
 	filter["total"] = total
 	filter["customers"] = customers
+	filter["errors"] = httpErrorObject.Errors
 	buf, e4 := json.Marshal(filter)
 	if e3 != nil || e4 != nil {
 		buf = nil
 		statusCode = model.HttpStatusInternalServerErrorCode
-		httpErrorObject.E = append(httpErrorObject.E, &model.HttpResponseErrorsContext{
+		httpErrorObject.Errors = append(httpErrorObject.Errors, &model.HttpResponseErrorsContext{
 			Code:model.DataBaseQuerryErrorCode,
 			Message: fmt.Sprintf("database query customer fail"),
 		})
+		return
 	}
 	statusCode = model.HttpStatusSuccessCode
 	return

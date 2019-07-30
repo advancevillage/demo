@@ -36,7 +36,7 @@ func (r *CustomerDatabaseRepository) Customers(offset, limit int) (customers []*
 	}
 	min := util.MinInt(total, limit)
 	customers = make([]*model.Customer, 0, min)
-	err = r.DB.Table(CustomerTable).Limit(limit).Offset(offset * limit).Find(customers).Error
+	err = r.DB.Table(CustomerTable).Find(&customers).Limit(limit).Offset(offset * limit).Error
 	return
 }
 ///////////////////////////////////////////////////////////////////////////////////////////

@@ -28,7 +28,7 @@ type Route struct {
 }
 
 type HttpResponseErrors struct {
-	E []*HttpResponseErrorsContext	`json:"errors"`
+	Errors []*HttpResponseErrorsContext	`json:"errors"`
 }
 
 type HttpResponseErrorsContext struct {
