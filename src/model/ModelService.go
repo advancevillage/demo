@@ -11,9 +11,13 @@ import (
 const (
 	HttpStatusSuccessCode = http.StatusOK
 	HttpStatusBadRequestCode = 400
+	HttpStatusInternalServerErrorCode = 500
 
 	//error code
 	HttpRequestParamErrorCode = 1000
+
+	//database
+	DataBaseQuerryErrorCode = 1100
 )
 
 //route

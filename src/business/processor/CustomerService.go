@@ -1,8 +1,11 @@
 package processor
 
 import (
+	"business/repository"
+	"encoding/json"
 	"fmt"
 	"model"
+	"pool"
 	"strconv"
 )
 
@@ -18,6 +21,22 @@ func QueryCustomersService(offsetString, limitString string, httpErrorObject *mo
 		})
 		return
 	}
-	fmt.Println(offset, limit)
-	return nil, model.HttpStatusSuccessCode
+	var customerService = &repository.CustomerService{Repo:&repository.CustomerDatabaseRepository{DB:pool.DatabaseConnection(false)}}
+	customers, total, e3 := customerService.Customers(offset, limit)
+
+	//filter response
+	filter := make(map[string]interface{})
+	filter["total"] = total
+	filter["customers"] = customers
+	buf, e4 := json.Marshal(filter)
+	if e3 != nil || e4 != nil {
+		buf = nil
+		statusCode = model.HttpStatusInternalServerErrorCode
+		httpErrorObject.E = append(httpErrorObject.E, &model.HttpResponseErrorsContext{
+			Code:model.DataBaseQuerryErrorCode,
+			Message: fmt.Sprintf("database query customer fail"),
+		})
+	}
+	statusCode = model.HttpStatusSuccessCode
+	return
 }
