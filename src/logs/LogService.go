@@ -2,7 +2,8 @@
 package logs
 
 import (
-	"bytes"
+	"bufio"
+	"log"
 	"model"
 	"os"
 	"strconv"
@@ -11,100 +12,119 @@ import (
 )
 
 var (
-	log  *model.Log
-	logOnce sync.Once
-	mutex  sync.RWMutex
+	instance   *model.Log
+	logOnce    sync.Once
 )
 
 const (
 	Byte = 1
 	KB	 = Byte * 1024
 	MB   = KB * 1024
-	MaxBufferSize = 1 * MB
-	MinBufferSize = 256 * KB
+
+	LogLevelEmer  = "[emer]"		//系统级紧急
+	LogLevelAlrt  = "[alrt]"		//系统级警告
+	LogLevelCrit  = "[crit]"		//系统级危险
+	LogLevelEror  = "[eror]"		//用户级错误
+	LogLevelWarn  = "[warn]"		//用户级警告
+	LogLevelInfo  = "[info]"		//用户级重要
+	LogLevelDebg  = "[debg]"		//用户级调试
+
+	LogTimestampLength = len("2019/08/05 23:45:28")
+	LogLevelLength     = len("[info]")
+	LogShortFileLength = 30
+	LogBaseInfoLength  = LogLevelLength + LogTimestampLength + LogShortFileLength
 )
 
 func InitLog(o *model.Log) (err error) {
 	logOnce.Do(func() {
-		log  = o
-		log.File = strings.Trim(log.File, " ")
-		log.CacheSizeString = strings.Trim(log.CacheSizeString, " ")
+		instance  = o
+		instance.FileName = strings.Trim(instance.FileName, " ")
+		instance.File, err = os.OpenFile(instance.FileName, os.O_CREATE | os.O_APPEND | os.O_RDWR, 0644)
+		if err != nil {
+			return
+		}
+		instance.CacheSizeString = strings.Trim(instance.CacheSizeString, " ")
 		//parse CacheSizeString
-		var x, y = 0,1
-		m := log.CacheSizeString[:len(log.CacheSizeString) - len("XB")]
-		n := log.CacheSizeString[len(log.CacheSizeString) - len("XB"):]
+		length := len(instance.CacheSizeString)
+		var x, y, z = 0,1, length - 1
+		for ; z >= 0; z-- {
+			if instance.CacheSizeString[z] >= '0' && instance.CacheSizeString[z] <= '9' {
+				break
+			} else {
+				continue
+			}
+		}
+		m := instance.CacheSizeString[:z + 1]
+		n := instance.CacheSizeString[z + 1:]
 		x, err = strconv.Atoi(m)
 		if err != nil {
 			return
 		}
 		switch n {
-		case "KB","kb","Kb","kB":
+		case "KB","kb":
 			y = KB
-		case "MB","mb","Mb","mB":
+		case "MB","mb":
 			y = MB
-		case "BB", "bb", "Bb", "bB":
+		case "Byte", "byte":
 			y = Byte
 		}
-		log.CacheSize = x * y
+		instance.CacheSize = x * y
 		//init log cache
-		for i := 0; i < log.CacheCount; i++ {
-			cache := make([]byte, 0, log.CacheSize)
-			buf := bytes.NewBuffer(cache)
-			log.Cache = append(log.Cache, *buf)
+		for i := 0; i < instance.CacheCount; i++ {
+			buf := bufio.NewWriterSize(instance.File, instance.CacheSize)
+			instance.Cache = append(instance.Cache, buf)
 		}
-		log.R = 0
-		log.W = 0
+		instance.Index = 0
 	})
 	return
 }
 
-//@note: err 并没有返回
-func Error(msg string) {
-	var err error
-	var i,j,m,n int
-	msg = msg + "\n"
-	n = len(msg)
-	for n > 0 {
-		i = j
-		free := log.CacheSize - log.Cache[log.W % log.CacheCount].Len()
-		if free >= n {
-			j += n
-			m, err = log.Cache[log.W % log.CacheCount].Write([]byte(msg[i:j]))
+//@brief: 写入缓存或持久化
+func write(level string, message string) {
+	for {
+		length := LogBaseInfoLength + len(message)
+		free := instance.Cache[instance.Index % instance.CacheCount].Available()
+		if length > free {
+			err := instance.Cache[instance.Index % instance.CacheCount].Flush()
 			if err != nil {
-				break
+				message = err.Error()
 			}
-			n = n - m
+			instance.Index = (instance.Index + 1) % instance.CacheCount
 		} else {
-			j += free
-			m, err = log.Cache[log.W % log.CacheCount].Write([]byte(msg[i:j]))
-			if err != nil {
-				break
-			}
-			go func() {
-				err = persistent()
-			}()
-			log.W++
-			n = n - m
+			logger := log.New(instance.Cache[instance.Index % instance.CacheCount], level, log.LstdFlags | log.Lshortfile)
+			logger.Println(message)
+			break
 		}
 	}
-	return
 }
 
-func persistent() (err error) {
-	mutex.RLock()
-	defer mutex.RUnlock()
-	f, err := os.OpenFile(log.File, os.O_CREATE | os.O_APPEND | os.O_RDWR, 0644)
-	if err != nil {
-		return
-	}
-	defer func() {
-		err = f.Close()
-	}()
-	_, err = log.Cache[log.R % log.CacheCount].WriteTo(f)
-	if err != nil {
-		return
-	}
-	log.Cache[log.R % log.CacheCount].Reset()
-	log.R++
-	return
+//@brief: error log
+func Error(message string) {
+	write(LogLevelEror, message)
+}
+
+//@brief: warning log
+func Warning(message string) {
+	write(LogLevelWarn, message)
+}
+
+//@brief: debug log
+func Debug(message string) {
+	write(LogLevelDebg, message)
+}
+
+func Info(message string) {
+	write(LogLevelInfo, message)
+}
+
+func Alert(message string) {
+	write(LogLevelAlrt, message)
+}
+
+func Critical(message string) {
+	write(LogLevelCrit, message)
+}
+
+func Emergency(message string) {
+	write(LogLevelEmer, message)
 }

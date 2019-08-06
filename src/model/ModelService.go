@@ -2,10 +2,11 @@
 package model
 
 import (
-	"bytes"
+	"bufio"
 	"github.com/jinzhu/gorm"
 	"github.com/julienschmidt/httprouter"
 	"net/http"
+	"os"
 )
 //const
 const (
@@ -67,11 +68,11 @@ type Configure struct {
 
 //log
 type Log struct {
-	CacheSizeString string 	`xml:"cache_size"`
-	File 	        string 	`xml:"file"`
-	CacheCount int 			`xml:"cache_count"`
-	Cache      []bytes.Buffer `xml:"-"`
-	CacheSize  int 			  `xml:"-"`
-	R		   int 			  `xml:"-"`
-	W 		   int 			  `xml:"-"`
+	CacheSizeString string 	   `xml:"cache_size"`
+	FileName        string 	   `xml:"file"`
+	CacheCount 		int 	   `xml:"cache_count"`
+	Cache      []*bufio.Writer `xml:"-"`
+	CacheSize       int 	   `xml:"-"`
+	File       		*os.File   `xml:"-"`
+	Index 			int 	   `xml:"-"`
 }
