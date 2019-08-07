@@ -3,6 +3,7 @@ package model
 
 import (
 	"bufio"
+	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/julienschmidt/httprouter"
 	"net/http"
@@ -62,8 +63,9 @@ type Databases struct {
 }
 
 type Configure struct {
+	LogObject       Log 	  `xml:"log"`
+	CachesObject    Caches 	  `xml:"caches"`
 	DatabasesObject Databases `xml:"databases"`
-	LogObject Log `xml:"log"`
 }
 
 //log
@@ -75,4 +77,22 @@ type Log struct {
 	CacheSize       int 	   `xml:"-"`
 	File       		*os.File   `xml:"-"`
 	Index 			int 	   `xml:"-"`
+}
+
+//redis master-slave
+type Cache struct {
+	Host 	 string `xml:"host"`
+	Port   	 string `xml:"port"`
+	Password string `xml:"password"`
+	Client  *redis.Client `xml:"-"`
+}
+type CacheMaster struct {
+	Member  Cache   `xml:"cache"`
+}
+type CacheSlaves struct {
+	Members []Cache `xml:"cache"`
+}
+type Caches struct {
+	Master  CacheMaster	`xml:"master"`
+	Slaves  CacheSlaves `xml:"slaves"`
 }

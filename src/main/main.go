@@ -13,6 +13,7 @@ package main
 
 import (
 	"args"
+	"fmt"
 	"logs"
 	"pool"
 	"router"
@@ -23,13 +24,16 @@ func main() {
 	//init args
 	err = args.Init()
 	if err != nil {
+		fmt.Println(err.Error())
 		return
 	}
 	//init log
 	err = logs.InitLog(args.LogConfigure())
 	if err != nil {
+		fmt.Println(err.Error())
 		return
 	}
+	defer logs.Close()
 	//init database
 	err = pool.InitDatabase(args.DatabaseConfigure())
 	if err != nil {
