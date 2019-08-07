@@ -81,13 +81,17 @@ func InitLog(o *model.Log) (err error) {
 
 //@brief: 写入缓存或持久化
 func write(level string, message string) {
+	length := LogBaseInfoLength + len(message)
 	for {
-		length := LogBaseInfoLength + len(message)
 		free := instance.Cache[instance.Index % instance.CacheCount].Available()
 		if length > free {
 			err := instance.Cache[instance.Index % instance.CacheCount].Flush()
 			if err != nil {
 				message = err.Error()
+				level   = LogLevelEmer
+				logger := log.New(instance.File, level, log.LstdFlags | log.Lshortfile)
+				logger.Println(message)
+				break
 			}
 			instance.Index = (instance.Index + 1) % instance.CacheCount
 		} else {
