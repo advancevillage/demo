@@ -43,8 +43,8 @@ func NewRouter() (err error) {
 func GetV1QueryCustomersProcessor(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	var err error
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	offset := util.HttpQueryParamsService(r, "offset")
-	limit  := util.HttpQueryParamsService(r, "limit")
+	offset := util.HttpQueryParams(r, "offset")
+	limit  := util.HttpQueryParams(r, "limit")
 	//错误信息数据生命期贯穿请求全局
 	httpErrorObject := new(model.HttpResponseErrors)
 	data, statusCode := processor.QueryCustomersProcessor(offset, limit, httpErrorObject)
