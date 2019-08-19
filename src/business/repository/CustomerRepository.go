@@ -9,20 +9,6 @@ const (
 	CustomerTable = "customers"
 )
 
-type CustomerRepository interface {
-	Customers(offset, limit int) ([]*model.Customer, int, error)
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////
-//services
-type CustomerService struct {
-	Repo CustomerRepository
-}
-
-func(s *CustomerService) Customers(offset, limit int) ([]*model.Customer, int, error) {
-	return s.Repo.Customers(offset, limit)
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////
 //database repository
 type CustomerDatabaseRepository struct {

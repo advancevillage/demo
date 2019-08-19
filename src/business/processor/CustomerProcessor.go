@@ -1,15 +1,16 @@
+//@brief: processor 负责上层是router,下层是service
+//负责参数解析校验等模块,业务的核心逻辑层
 package processor
 
 import (
-	"business/repository"
+	"business/service"
 	"encoding/json"
 	"fmt"
 	"model"
-	"pool"
 	"strconv"
 )
 
-func QueryCustomersService(offsetString, limitString string, httpErrorObject *model.HttpResponseErrors) (buf []byte, statusCode int) {
+func QueryCustomersProcessor(offsetString, limitString string, httpErrorObject *model.HttpResponseErrors) (buf []byte, statusCode int) {
 	offset, e1 := strconv.Atoi(offsetString)
 	limit,  e2 := strconv.Atoi(limitString)
 	if e1 != nil || e2 != nil {
@@ -21,9 +22,8 @@ func QueryCustomersService(offsetString, limitString string, httpErrorObject *mo
 		})
 		return
 	}
-	var customerService = &repository.CustomerService{Repo:&repository.CustomerDatabaseRepository{DB:pool.DatabaseConnection(false)}}
+	var customerService = service.NewCustomerService(false)
 	customers, total, e3 := customerService.Customers(offset, limit)
-
 	//filter response
 	filter := make(map[string]interface{})
 	filter["total"] = total
@@ -34,7 +34,7 @@ func QueryCustomersService(offsetString, limitString string, httpErrorObject *mo
 		buf = nil
 		statusCode = model.HttpStatusInternalServerErrorCode
 		httpErrorObject.Errors = append(httpErrorObject.Errors, &model.HttpResponseErrorsContext{
-			Code:model.DataBaseQuerryErrorCode,
+			Code:model.DataBaseQueryErrorCode,
 			Message: fmt.Sprintf("database query customer fail"),
 		})
 		return

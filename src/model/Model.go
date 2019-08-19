@@ -18,7 +18,7 @@ const (
 	HttpRequestParamErrorCode = 1000
 
 	//database
-	DataBaseQuerryErrorCode = 1100
+	DataBaseQueryErrorCode = 1100
 )
 
 //route

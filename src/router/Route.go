@@ -47,7 +47,7 @@ func GetV1QueryCustomersProcessor(w http.ResponseWriter, r *http.Request, ps htt
 	limit  := util.HttpQueryParamsService(r, "limit")
 	//错误信息数据生命期贯穿请求全局
 	httpErrorObject := new(model.HttpResponseErrors)
-	data, statusCode := processor.QueryCustomersService(offset, limit, httpErrorObject)
+	data, statusCode := processor.QueryCustomersProcessor(offset, limit, httpErrorObject)
 	//返回数据集
 	w.WriteHeader(statusCode)
 	n, err := w.Write(data)
