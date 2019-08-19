@@ -3,7 +3,7 @@
     <databases>
         <master>
             <database>
-                <host>100.100.20.36</host>
+                <host>192.168.1.101</host>
                 <port>3306</port>
                 <user>root</user>
                 <password>password</password>
@@ -14,7 +14,7 @@
         </master>
         <slaves>
             <database>
-                <host>100.100.20.36</host>
+                <host>192.168.1.101</host>
                 <port>3306</port>
                 <user>root</user>
                 <password>password</password>
@@ -23,7 +23,43 @@
                 <driver>mysql</driver>
             </database>
             <database>
-                <host>100.100.20.36</host>
+                <host>192.168.1.101</host>
+                <port>3306</port>
+                <user>root</user>
+                <password>password</password>
+                <schema>demo</schema>
+                <charset>utf8</charset>
+                <driver>mysql</driver>
+            </database>
+            <database>
+                <host>192.168.1.101</host>
+                <port>3306</port>
+                <user>root</user>
+                <password>password</password>
+                <schema>demo</schema>
+                <charset>utf8</charset>
+                <driver>mysql</driver>
+            </database>
+            <database>
+                <host>192.168.1.101</host>
+                <port>3306</port>
+                <user>root</user>
+                <password>password</password>
+                <schema>demo</schema>
+                <charset>utf8</charset>
+                <driver>mysql</driver>
+            </database>
+            <database>
+                <host>192.168.1.101</host>
+                <port>3306</port>
+                <user>root</user>
+                <password>password</password>
+                <schema>demo</schema>
+                <charset>utf8</charset>
+                <driver>mysql</driver>
+            </database>
+            <database>
+                <host>192.168.1.101</host>
                 <port>3306</port>
                 <user>root</user>
                 <password>password</password>
@@ -36,6 +72,27 @@
     <log>
         <file>demo.log</file>
         <cache_count>10</cache_count>
-        <cache_size>256KB</cache_size>
+        <cache_size>8kb</cache_size>
     </log>
+    <caches>
+        <master>
+            <cache>
+                <host>192.168.1.101</host>
+                <port>6379</port>
+                <password>richard</password>
+            </cache>
+        </master>
+        <slaves>
+            <cache>
+                <host>192.168.1.101</host>
+                <port>6379</port>
+                <password>richard</password>
+            </cache>
+            <cache>
+                <host>192.168.1.101</host>
+                <port>6379</port>
+                <password>richard</password>
+            </cache>
+        </slaves>
+    </caches>
 </configure>

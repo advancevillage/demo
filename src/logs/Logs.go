@@ -132,3 +132,8 @@ func Critical(message string) {
 func Emergency(message string) {
 	write(LogLevelEmer, message)
 }
+
+func Close() {
+	_ = instance.Cache[instance.Index % instance.CacheCount].Flush()
+	_ = instance.File.Close()
+}
