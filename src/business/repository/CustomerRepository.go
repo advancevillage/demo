@@ -17,8 +17,8 @@ type CustomerDatabaseRepository struct {
 
 func (r *CustomerDatabaseRepository) Customers(offset, limit int) (customers []*model.Customer, total int, err error) {
 	err = r.DB.Table(CustomerTable).Count(&total).Error
-	if err != nil {
-		return
+	if err != nil || total == 0 {
+		return nil, 0, nil
 	}
 	min := util.MinInt(total, limit)
 	customers = make([]*model.Customer, 0, min)

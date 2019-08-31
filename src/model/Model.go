@@ -18,6 +18,9 @@ const (
 	//error code
 	HttpRequestParamErrorCode = 1000
 
+	HttpRequestParamOffetFormatError = "offset = %s is error"
+	HttpRequestParamLimitFormatError = "limit = %s is error"
+
 	//database
 	DataBaseQueryErrorCode = 1100
 )
